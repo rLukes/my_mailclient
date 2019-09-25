@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './message_list.dart';
 
 void main() => runApp(MyEmailApp());
 
@@ -8,42 +9,8 @@ class MyEmailApp extends StatelessWidget {
     return MaterialApp(
       title: 'Emial app',
       theme: ThemeData(primarySwatch: Colors.blueGrey, accentColor: Colors.red),
-      home: MyEmailHomePage("My Email"),
+      home: MessageList(title: "MyEmail",),
     );
   }
 }
 
-class MyEmailHomePage extends StatelessWidget {
-  final String title;
-  var messages = const [
-    'my frist message',
-    'my seconde message',
-    'My new message'
-  ];
-
-  MyEmailHomePage(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-        ),
-        body: ListView.separated(
-            itemCount: messages.length,
-            separatorBuilder: (context, index){
-              return Divider();
-            },
-            itemBuilder: (BuildContext context, int index) {
-              var title = messages[index];
-              return ListTile(
-                title: Text(title),
-                subtitle: Text("Another text"),
-                leading: CircleAvatar(
-                  child: Text("AS"),
-                ),
-                isThreeLine: true,
-              );
-            }));
-  }
-}
