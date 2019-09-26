@@ -1,39 +1,74 @@
 import 'package:flutter/material.dart';
 
-class MessageCompose extends StatelessWidget {
+import 'Message.dart';
+
+class MessageCompose extends StatefulWidget {
+  @override
+  _MessageComposeState createState() => _MessageComposeState();
+}
+
+class _MessageComposeState extends State<MessageCompose> {
+  String to = "";
+  String subject = "";
+  String body = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("new message"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(16),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("compose new message", style: Theme.of(context).textTheme.title,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                RaisedButton(
-                  child: Text("Love"),
-                  onPressed: (){
-                    Navigator.pop(context,"lov");
-                  },
+            ListTile(
+              title: TextField(
+                decoration: InputDecoration(
+                  labelText: 'To',
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                RaisedButton(
-                  child: Text("Hate"),
-                  onPressed: (){
-                    Navigator.pop(context, "hate");
-                  },
-                )
-              ],
+                onChanged: (value) {
+                  to = value;
+                },
+              ),
+            ),
+            ListTile(
+              title: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Subject',
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onChanged: (value) {
+                  subject = value;
+                },
+              ),
+            ),
+            Divider(),
+            ListTile(
+              title: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Body',
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                maxLines: 8,
+                onChanged: (value) {
+                  body = value;
+                },
+              ),
+            ),
+            ListTile(
+              title: RaisedButton(
+                onPressed: () {
+                 Message newMessage = new Message(subject, body);
+                 Navigator.pop(context, newMessage);
+                },
+                child: Text("Send"),
+              ),
             )
           ],
         ),
-      )
+      ),
     );
   }
 }
-
