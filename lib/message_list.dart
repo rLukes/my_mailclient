@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_mailclient/Message.dart';
-
+import 'package:my_mailclient/compose_button.dart';
+import 'package:my_mailclient/message_detail.dart';
 
 class MessageList extends StatefulWidget {
   final String title;
@@ -22,15 +23,19 @@ class _MessageListState extends State<MessageList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: ComposeButton(),
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.refresh), onPressed: (){
-            var _messages = Message.browse();
-            setState(() {
-              messages = _messages;
-            });
-          },)
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              var _messages = Message.browse();
+              setState(() {
+                messages = _messages;
+              });
+            },
+          )
         ],
       ),
       body: FutureBuilder(
@@ -42,7 +47,7 @@ class _MessageListState extends State<MessageList> {
               case ConnectionState.active:
                 return Center(child: CircularProgressIndicator());
               case ConnectionState.done:
-                if(snapshot.hasError) return Text("Erro!!");
+                if (snapshot.hasError) return Text("Erro!!");
 
                 var messages = snapshot.data;
                 return ListView.separated(
@@ -53,17 +58,25 @@ class _MessageListState extends State<MessageList> {
                   itemBuilder: (BuildContext context, int index) {
                     Message message = messages[index];
                     return ListTile(
-                      title: Text(message.subject),
-                      subtitle: Text(
-                        message.body,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      leading: CircleAvatar(
-                        child: Text("AS"),
-                      ),
-                      isThreeLine: true,
-                    );
+                        title: Text(message.subject),
+                        subtitle: Text(
+                          message.body,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        leading: CircleAvatar(
+                          child: Text("AS"),
+                        ),
+                        isThreeLine: true,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext ctx) =>
+                                  MessageDetail(message.subject, message.body),
+                            ),
+                          );
+                        });
                   },
                 );
             }
