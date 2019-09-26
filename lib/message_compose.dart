@@ -11,6 +11,7 @@ class _MessageComposeState extends State<MessageCompose> {
   String to = "";
   String subject = "";
   String body = "";
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,54 +20,54 @@ class _MessageComposeState extends State<MessageCompose> {
         title: Text("new message"),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  labelText: 'To',
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ListTile(
+                title: TextFormField(
+                  onSaved: (value) {
+                    to = value;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'To',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-                onChanged: (value) {
-                  to = value;
-                },
               ),
-            ),
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Subject',
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Subject',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  onSaved: (value) => subject = value,
                 ),
-                onChanged: (value) {
-                  subject = value;
-                },
               ),
-            ),
-            Divider(),
-            ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Body',
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
+              Divider(),
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Body',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  maxLines: 8,
+                  onSaved: (value) => body = value,
                 ),
-                maxLines: 8,
-                onChanged: (value) {
-                  body = value;
-                },
               ),
-            ),
-            ListTile(
-              title: RaisedButton(
-                onPressed: () {
-                 Message newMessage = new Message(subject, body);
-                 Navigator.pop(context, newMessage);
-                },
-                child: Text("Send"),
-              ),
-            )
-          ],
+              ListTile(
+                title: RaisedButton(
+                  onPressed: () {
+                    this.formKey.currentState.save();
+                    Message newMessage = new Message(subject, body);
+                    Navigator.pop(context, newMessage);
+                  },
+                  child: Text("Send"),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
