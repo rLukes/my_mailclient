@@ -30,6 +30,12 @@ class _MessageComposeState extends State<MessageCompose> {
                   onSaved: (value) {
                     to = value;
                   },
+                  validator: (value) {
+                    if (!value.contains('@')) {
+                      return "To must be a valid email";
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     labelText: 'To',
                     labelStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -38,6 +44,12 @@ class _MessageComposeState extends State<MessageCompose> {
               ),
               ListTile(
                 title: TextFormField(
+                  validator: (value){
+                    if(value.length == 0){
+                      return "subject cannot be empty";
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     labelText: 'Subject',
                     labelStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -59,9 +71,11 @@ class _MessageComposeState extends State<MessageCompose> {
               ListTile(
                 title: RaisedButton(
                   onPressed: () {
-                    this.formKey.currentState.save();
-                    Message newMessage = new Message(subject, body);
-                    Navigator.pop(context, newMessage);
+                    if (this.formKey.currentState.validate()) {
+                      this.formKey.currentState.save();
+                      Message newMessage = new Message(subject, body);
+                      Navigator.pop(context, newMessage);
+                    }
                   },
                   child: Text("Send"),
                 ),
