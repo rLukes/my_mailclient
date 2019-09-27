@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_mailclient/ContactManager.dart';
 import 'package:my_mailclient/app_drawer.dart';
+import 'package:my_mailclient/contact_list_builder.dart';
+import 'package:my_mailclient/contact_search_delegate.dart';
 import 'package:my_mailclient/model/contact.dart';
 
 class ContactScreen extends StatelessWidget {
-  ContactManager manger = new ContactManager();
+  ContactManager manager = new ContactManager();
 
   @override
   Widget build(BuildContext context) {
@@ -14,44 +16,40 @@ class ContactScreen extends StatelessWidget {
         title: Text("Contact"),
         actions: <Widget>[
           StreamBuilder<int>(
-              stream: manger.contactCount,
-              builder: (BuildContext context, snapshot) {
-                return Chip(
-                  label: Text(
-                    (snapshot.data ?? 0).toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  backgroundColor: Colors.grey,
-                );
-              })
+            stream: manager.contactCount,
+            builder: (BuildContext context, snapshot) {
+              return Chip(
+                label: Text(
+                  (snapshot.data ?? 0).toString(),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                backgroundColor: Colors.grey,
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                  context: context, delegate: ContactSearchDelegate(manager));
+            },
+          )
         ],
       ),
-      body: StreamBuilder(
-        stream: manger.contactListView,
-        builder: (BuildContext context, AsyncSnapshot<List<Contact>> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-            case ConnectionState.active:
-              return Center(child: CircularProgressIndicator());
-
-            case ConnectionState.done:
-              List<Contact> contacts = snapshot.data;
-              return ListView.separated(
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return ListTile(
-                      title: Text(contacts[index].name),
-                      subtitle: Text(contacts[index].email),
-                      leading: CircleAvatar(),
-                    );
-                  },
-                  separatorBuilder: (context, index) => Divider(),
-                  itemCount: contacts?.length ?? 0);
-            default:
-              return Center(child: CircularProgressIndicator());
-              break;
-          }
+      body: ContactListBuilder(
+        stream: manager.contactListView,
+        builder: (context, contacts) {
+          return ListView.separated(
+              itemBuilder: (BuildContext ctx, int index) {
+                return ListTile(
+                  title: Text(contacts[index].name),
+                  subtitle: Text(contacts[index].email),
+                  leading: CircleAvatar(),
+                );
+              },
+              separatorBuilder: (context, index) => Divider(),
+              itemCount: contacts?.length ?? 0);
         },
       ),
     );
