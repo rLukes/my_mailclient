@@ -108,6 +108,9 @@ class _MessageListState extends State<MessageList> {
                   );
                 },
               );
+            default:
+              return Center(child: CircularProgressIndicator());
+              break;
           }
         });
   }
