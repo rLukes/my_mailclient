@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 part 'Message.g.dart';
 
 @JsonSerializable()
-class Message{
+class Message {
   final String subject;
   final String body;
 
@@ -15,17 +15,19 @@ class Message{
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);
 
-
-  static Future<List<Message>> browse() async{
+  static Future<List<Message>> browse({String status = 'important'}) async {
     //String content = await rootBundle.loadString('data/message.json');
-    http.Response response = await http.get("http://www.mocky.io/v2/5d8b6d1c3500005c00d46fd4");
+    String url = status == 'important' ? 'http://www.mocky.io/v2/5d8dd43e31000006632b50d0' : 'http://www.mocky.io/v2/5d8b6d1c3500005c00d46fd4';
+    http.Response response = await http.get(url);
+
     await Future.delayed(Duration(seconds: 1));
 
     String content = response.body;
 
     List collection = json.decode(content);
 
-    List<Message> _messages = collection.map((m) => new Message.fromJson(m)).toList();
+    List<Message> _messages =
+        collection.map((m) => new Message.fromJson(m)).toList();
     return _messages;
   }
 }
