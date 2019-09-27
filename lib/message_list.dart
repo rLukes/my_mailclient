@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_mailclient/Message.dart';
 import 'package:my_mailclient/compose_button.dart';
 import 'package:my_mailclient/message_detail.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class MessageList extends StatefulWidget {
   final String title;
@@ -45,24 +47,25 @@ class _MessageListState extends State<MessageList> {
                   child: CircleAvatar(
                     child: Icon(Icons.add),
                   ),
-                  onTap: (){
-                    showDialog(context: context,
-                    builder: (context){
-                      return AlertDialog(title: Text("Adding new acount...."),);
-                    });
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Adding new acount...."),
+                          );
+                        });
                   },
                 )
               ],
             ),
-
             ListTile(
-              leading: Icon(FontAwesomeIcons.inbox),
-              title: Text("Inbox"),
-              trailing: Chip(
-                label: Text("11"),
-                backgroundColor: Colors.grey,
-              )
-            ),
+                leading: Icon(FontAwesomeIcons.inbox),
+                title: Text("Inbox"),
+                trailing: Chip(
+                  label: Text("11"),
+                  backgroundColor: Colors.grey,
+                )),
             ListTile(
               leading: Icon(FontAwesomeIcons.edit),
               title: Text("Draft"),
@@ -99,9 +102,8 @@ class _MessageListState extends State<MessageList> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () async {
-              var _messages = await Message.browse();
               setState(() {
-                messages = _messages;
+                future = Message.browse();
               });
             },
           )
@@ -126,26 +128,62 @@ class _MessageListState extends State<MessageList> {
                   },
                   itemBuilder: (BuildContext context, int index) {
                     Message message = messages[index];
-                    return ListTile(
-                        title: Text(message.subject),
-                        subtitle: Text(
-                          message.body,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                    return Slidable(
+                      child: ListTile(
+                          title: Text(message.subject),
+                          subtitle: Text(
+                            message.body,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          leading: CircleAvatar(
+                            child: Text("AS"),
+                          ),
+                          isThreeLine: true,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext ctx) => MessageDetail(
+                                    message.subject, message.body),
+                              ),
+                            );
+                          }),
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.25,
+                      actions: <Widget>[
+                        IconSlideAction(
+                          caption: 'Archive',
+                          color: Colors.blue,
+                          icon: Icons.archive,
+                          onTap: () {},
                         ),
-                        leading: CircleAvatar(
-                          child: Text("AS"),
+                        IconSlideAction(
+                          caption: 'Share',
+                          color: Colors.indigo,
+                          icon: Icons.share,
+                          onTap: () {},
                         ),
-                        isThreeLine: true,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext ctx) =>
-                                  MessageDetail(message.subject, message.body),
-                            ),
-                          );
-                        });
+                      ],
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                          caption: 'More',
+                          color: Colors.black45,
+                          icon: Icons.more_horiz,
+                          onTap: () {},
+                        ),
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          onTap: () {
+                            setState(() {
+                              messages.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
+                    );
                   },
                 );
             }
