@@ -11,6 +11,7 @@ class CalendarScreen extends StatelessWidget {
         ),
         body: Center(
           child: Text("cal"),
-        ));
+        ),
+    );
   }
 }
