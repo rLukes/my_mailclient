@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_mailclient/Message.dart';
-import 'package:my_mailclient/compose_button.dart';
 import 'package:my_mailclient/message_detail.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 

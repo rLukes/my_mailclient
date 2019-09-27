@@ -1,38 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:my_mailclient/app_drawer.dart';
-import 'package:my_mailclient/message_list.dart';
+import 'package:my_mailclient/calendar_screen.dart';
+import 'package:my_mailclient/contact_screen.dart';
+import 'package:my_mailclient/inbox_screen.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  int _selectedIndex=0;
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      child: Scaffold(
-
-        appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () async {},
-            )
-          ],
-          bottom: TabBar(
-            tabs: <Widget>[
-              Tab(
-                text: "Importent",
-              ),
-              Tab(text: "Other",)
-            ],
+    return Scaffold(
+      body: [
+        InboxScreen(),
+        ContactScreen(),
+        CalendarScreen()
+      ].elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            title: Text("Inbox"),
+            icon: Icon(Icons.inbox),
           ),
-        ),
-        drawer:AppDrawer(),
-        body: TabBarView(
-          children: <Widget>[
-            MessageList(status: 'important'),
-            MessageList(status: 'other')
-          ],
-        ),
+          BottomNavigationBarItem(
+            title: Text("Contacts"),
+            icon: Icon(Icons.people),
+          ),
+          BottomNavigationBarItem(
+            title: Text("Calendar"),
+            icon: Icon(Icons.calendar_today),
+          )
+        ],
+        currentIndex: _selectedIndex,
+        onTap: (index){
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
-      length: 2,
     );
   }
 }
