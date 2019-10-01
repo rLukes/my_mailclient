@@ -6,10 +6,10 @@ import 'package:my_mailclient/provider.dart';
 class Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    CounterManager counter_manger = Provider.of(context).fetch(CounterManager);
+    CounterManager counterManger = Provider.of(context).fetch(CounterManager);
     return Center(
       child: Observer<int>(
-        stream: counter_manger.counter$,
+        stream: counterManger.counter$,
         onSuccess: (context, data) {
           return Text("Calendar: $data");
         },

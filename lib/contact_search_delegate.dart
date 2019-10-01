@@ -4,7 +4,6 @@ import 'package:my_mailclient/contact_list_builder.dart';
 import 'package:my_mailclient/provider.dart';
 
 class ContactSearchDelegate extends SearchDelegate {
-
   ContactSearchDelegate();
 
   @override
@@ -37,23 +36,24 @@ class ContactSearchDelegate extends SearchDelegate {
       return Center(
         child: Text("Type more then tre letters"),
       );
-    } else {
-      return ContactListBuilder(
-        stream: manager.browse$(query: query),
-        builder: (context, contacts) {
-          return ListView.separated(
-              itemBuilder: (BuildContext ctx, int index) {
-                return ListTile(
-                  title: Text(contacts[index].name),
-                  subtitle: Text(contacts[index].email),
-                  leading: CircleAvatar(),
-                );
-              },
-              separatorBuilder: (context, index) => Divider(),
-              itemCount: contacts?.length ?? 0);
-        },
-      );
     }
+    manager.inFilter.add(query);
+
+    return ContactListBuilder(
+      stream: manager.browse$,
+      builder: (context, contacts) {
+        return ListView.separated(
+            itemBuilder: (BuildContext ctx, int index) {
+              return ListTile(
+                title: Text(contacts[index].name),
+                subtitle: Text(contacts[index].email),
+                leading: CircleAvatar(),
+              );
+            },
+            separatorBuilder: (context, index) => Divider(),
+            itemCount: contacts?.length ?? 0);
+      },
+    );
   }
 
   @override
