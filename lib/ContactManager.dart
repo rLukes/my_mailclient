@@ -6,14 +6,12 @@ import 'package:my_mailclient/service/conctac_service.dart';
 
 class ContactManager {
   final PublishSubject<String> _filterSubject = PublishSubject<String>();
-  final BehaviorSubject<int> _countSubject = BehaviorSubject<int>();
+  final PublishSubject<int> _countSubject = PublishSubject<int>();
   final PublishSubject<List<Contact>> _collectionSubject = PublishSubject();
 
-  Stream<int> get count$ => _countSubject.stream;
-
+  Observable<int> get count$ => _countSubject.stream;
   Sink<String> get inFilter => _filterSubject.sink;
-
-  Stream<List<Contact>> get browse$ => _collectionSubject.stream;
+  Observable<List<Contact>> get browse$ => _collectionSubject.stream;
 
   ContactManager() {
     _filterSubject.stream.listen((filter) async {
