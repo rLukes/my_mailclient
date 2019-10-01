@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_mailclient/ContactManager.dart';
 import 'package:my_mailclient/contact_list_builder.dart';
+import 'package:my_mailclient/overseer.dart';
 import 'package:my_mailclient/provider.dart';
 
-
 class ContactSearchDelegate extends SearchDelegate {
-
 
   ContactSearchDelegate();
 
@@ -33,13 +32,15 @@ class ContactSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    ContactManager manager = Provider.of(context);
+    ContactManager manager = Provider.of(context).fetch(ContactManager);
+
     if (query.length < 3) {
       return Center(
         child: Text("Type more then tre letters"),
       );
     } else {
       return ContactListBuilder(
+        stream: manager.filteredCollection(query: query),
         builder: (context, contacts) {
           return ListView.separated(
               itemBuilder: (BuildContext ctx, int index) {

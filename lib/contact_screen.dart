@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:my_mailclient/ContactManager.dart';
 import 'package:my_mailclient/app_drawer.dart';
 import 'package:my_mailclient/contact_counter.dart';
 import 'package:my_mailclient/contact_list_builder.dart';
 import 'package:my_mailclient/contact_search_delegate.dart';
+import 'package:my_mailclient/overseer.dart';
 import 'package:my_mailclient/provider.dart';
+import 'package:my_mailclient/ContactManager.dart';
+
+
 
 class ContactScreen extends StatelessWidget {
 
- // ContactManager manager = new ContactManager();
-
   @override
   Widget build(BuildContext context) {
-
-
+    ContactManager manager = Provider.of(context).fetch(ContactManager);
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
@@ -31,6 +31,7 @@ class ContactScreen extends StatelessWidget {
         ],
       ),
       body: ContactListBuilder(
+        stream: manager.contactListView,
         builder: (context, contacts) {
           return ListView.separated(
               itemBuilder: (BuildContext ctx, int index) {

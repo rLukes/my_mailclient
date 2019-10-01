@@ -1,17 +1,16 @@
-
 import 'package:flutter/material.dart';
-import 'package:my_mailclient/ContactManager.dart';
+import 'package:my_mailclient/overseer.dart';
 
-class Provider extends InheritedWidget {
-
-  final ContactManager data;
+class Provider<T> extends InheritedWidget {
+  final Overseer data;
 
   Provider({Key key, Widget child, this.data}) : super(key : key, child: child);
 
   //create alias, of areas for convenience
-  static ContactManager of(BuildContext context){
+  static Overseer of<T>(BuildContext context){
     return (context.inheritFromWidgetOfExactType(Provider) as Provider).data;
   }
+
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) {
