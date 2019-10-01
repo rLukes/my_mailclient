@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_mailclient/FabButton.dart';
 import 'package:my_mailclient/app_drawer.dart';
+import 'package:my_mailclient/counter.dart';
 
 class CalendarScreen extends StatelessWidget {
   @override
@@ -10,8 +12,9 @@ class CalendarScreen extends StatelessWidget {
           title: Text("Calendar"),
         ),
         body: Center(
-          child: Text("cal"),
+          child: Counter(),
         ),
+        floatingActionButton: FabButton(),
     );
   }
 }

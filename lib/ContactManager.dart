@@ -6,18 +6,15 @@ import 'package:my_mailclient/service/conctac_service.dart';
 
 class ContactManager{
   final BehaviorSubject<int> _contactCount = BehaviorSubject<int>();
-  Stream<int> get contactCount => _contactCount.stream;
+  Stream<int> get count$ => _contactCount.stream;
   
-  Stream<List<Contact>> get contactListView {
-    return Stream.fromFuture(ContactService.browse());
-  }
 
-  Stream<List<Contact>> filteredCollection ({query}) {
+  Stream<List<Contact>> browse$ ({String query}) {
     return Stream.fromFuture(ContactService.browse(query:query));
   }
 
   ContactManager(){
-    contactListView.listen((list) => _contactCount.add(list.length));
+    browse$().listen((list) => _contactCount.add(list.length));
   }
 
   void dispose(){
