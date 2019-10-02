@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_mailclient/app_drawer.dart';
 import 'package:my_mailclient/contact_counter.dart';
 import 'package:my_mailclient/contact_list_builder.dart';
-import 'package:my_mailclient/contact_search_delegate.dart';
+import 'package:my_mailclient/screen/contact_search_delegate.dart';
 import 'package:my_mailclient/provider.dart';
-import 'package:my_mailclient/ContactManager.dart';
+import 'package:my_mailclient/manager/ContactManager.dart';
 
 
 

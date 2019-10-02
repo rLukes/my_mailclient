@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:my_mailclient/Message.dart';
-import 'package:my_mailclient/message_detail.dart';
+import 'package:my_mailclient/screen/message_detail.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class MessageList extends StatefulWidget {

@@ -1,6 +1,7 @@
 
-import 'package:my_mailclient/ContactManager.dart';
-import 'package:my_mailclient/counter_manager.dart';
+import 'package:my_mailclient/manager/ContactManager.dart';
+import 'package:my_mailclient/manager/counter_manager.dart';
+import 'package:my_mailclient/manager/message_form_manager.dart';
 
 class Overseer{
   Map<dynamic, dynamic> repository = {};
@@ -8,6 +9,7 @@ class Overseer{
   Overseer(){
     register(ContactManager, ContactManager());
     register(CounterManager, CounterManager());
+    register(MessageFormManager, MessageFormManager());
   }
 
   register(name, object){

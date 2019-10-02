@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_mailclient/Observer.dart';
-import 'package:my_mailclient/counter_manager.dart';
+import 'package:my_mailclient/manager/counter_manager.dart';
 import 'package:my_mailclient/provider.dart';
 
 class Counter extends StatelessWidget {
