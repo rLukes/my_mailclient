@@ -1,21 +1,10 @@
 import 'dart:async';
+import 'package:my_mailclient/model/validation.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MessageFormManager {
-  final _email = BehaviorSubject<String>.seeded("@");
+class MessageFormManager with Validation{
+  final _email = BehaviorSubject<String>();
 
   Stream<String> get email$ => _email.stream.transform(validateEmail);
-
   Sink<String> get inEmail => _email.sink;
-
-  static bool isEmail(String email) => email.contains("@");
-
-  final validateEmail =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
-    if (isEmail(value)) {
-      sink.add(value);
-    }else{
-      sink.addError("This field is invalid");
-    }
-  });
 }

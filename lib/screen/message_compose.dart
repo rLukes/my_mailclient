@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_mailclient/Observer.dart';
 import 'package:my_mailclient/manager/message_form_manager.dart';
 import 'package:my_mailclient/provider.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../Message.dart';
 
@@ -48,25 +46,16 @@ class _MessageComposeState extends State<MessageCompose> {
                     labelStyle: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 )*/
-                    Observer(
+                  StreamBuilder(
                   stream: manager.email$,
-                  onSuccess: (context, data) {
+                  builder: (context, snapshot) {
                     return TextField(
                       onChanged: manager.inEmail.add,
                       decoration: InputDecoration(
                         labelText: 'To',
                         labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                        errorText:snapshot.error
                       ),
-                    );
-                  },
-                  onError: (context, error) {
-                    return TextField(
-                      onChanged: manager.inEmail.add,
-                      decoration: InputDecoration(
-                          labelText: 'To (error)',
-                          labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                          errorText: error
-                      )
                     );
                   },
                 ),

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:my_mailclient/model/contact.dart';
